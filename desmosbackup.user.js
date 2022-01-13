@@ -21,8 +21,8 @@
 function PageScript() {
   window.DesmosBackup = new Object();
 
-  // my stuff
-  DesmosBackup.getBackup = function() {
+  // custom stuff here
+  DesmosBackup.getBackup = async function() {
  //   for( var i=0; i<g.length; i++) {                                                    // foreach user graphs
  //     t += "<div><a href=https://www.desmos.com/calculator/"+g[i].hash+"><img src="+g[i].thumbURL+"></br>"+g[i].title+"</a>"; // image + title + URL
  //  /* t+= " (<a href="+g[i].stateURL+">JSON"+"</a>)"; */                                // optional JSON URL for backup
@@ -47,8 +47,8 @@ function PageScript() {
     const promises = t.map(desmo);
     await Promise.all(promises);
     console.log(GraphsList);
-    header = '{ \n  "userName": "[name]",\n  "date": ' + new Date() + ',\n  'numGraphs": [N],\n  "graphs:": [ \n'; // Fabrice: following Shadertoy "export all" format
-    download( header + JSON.stringify(GraphsList) + '\n  ]\n}\n", "data.txt", "text/plain; charset=UTF-8");
+    header = '{ \n  "userName": "[name]",\n  "date": ' + new Date() + ',\n  "numGraphs": [N],\n  "graphs:": [ \n'; // Fabrice: following Shadertoy "export all" format
+    download( header + JSON.stringify(GraphsList) + '\n  ]\n}\n', "data.txt", "text/plain; charset=UTF-8");
 
     // ......................
     
