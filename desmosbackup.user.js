@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DesmosBackup
 // @namespace   https://github.com/FabriceNeyret/DesmosBackup
-// @version     0.4.alpha
+// @version     0.4
 // @description Backup all your Desmos graphs as a json file
 // @author      Fabrice Neyret
 // @include     https://www.desmos.com/calculator*
