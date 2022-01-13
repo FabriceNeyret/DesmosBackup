@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DesmosBackup
 // @namespace   https://github.com/FabriceNeyret/DesmosBackup
-// @version     0.3.alpha
+// @version     0.4.alpha
 // @description Backup all your Desmos graphs as a json file
 // @author      Fabrice Neyret
 // @include     https://www.desmos.com/calculator*
@@ -56,8 +56,9 @@ function PageScript() {
 
     // ......................
     
-    window.open().document.write(t);                                                    // creates new tab with backup (for verification)
-    //download( t, "DesmosBackup.json", "text/plain; charset=UTF-8" );                  // download the file
+  //window.open().document.write(t);                                                    // creates new tab with backup (for verification)
+    window.open().document.write("<html><title>DesmosGraph Backup<body>"+t.replace(/\n/g, '</br>')+"</body>+</html>");  // creates new tab with backup (for verification)
+  //download( t, "DesmosBackup.json", "text/plain; charset=UTF-8" );                  // download the file
   };
 
 function download(data, filename, type) { // from https://github.com/SlimRunner/desmos-scripts-addons/blob/master/graph-archival-script/
