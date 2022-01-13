@@ -53,7 +53,7 @@ function PageScript() {
     // ......................
     
     window.open().document.write(t);                                                    // creates new tab with backup (for verification)
-    download( t, "DesmosBackup.html", "text/plain; charset=UTF-8" );                   // download the html file
+    //download( t, "DesmosBackup.html", "text/plain; charset=UTF-8" );                   // download the html file
   };
 
 function download(data, filename, type) { // from https://github.com/SlimRunner/desmos-scripts-addons/blob/master/graph-archival-script/
