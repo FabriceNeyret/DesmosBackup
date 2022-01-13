@@ -81,7 +81,7 @@ function download(data, filename, type) { // from https://github.com/SlimRunner/
     DesmosBackup.button.type = "button";
     DesmosBackup.button.disabled = false; // true;
     DesmosBackup.button.addEventListener("click", DesmosBackup.getBackup, false);
-    DesmosBackup.button.value = Backup all Graphs";
+    DesmosBackup.button.value = "Backup all Graphs";
 
     spanObj.appendChild(DesmosBackup.button);
 
