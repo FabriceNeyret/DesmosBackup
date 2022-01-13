@@ -57,7 +57,7 @@ function PageScript() {
     // ......................
     
   //window.open().document.write(t);                                                    // creates new tab with backup (for verification)
-    window.open().document.write("<html><title>DesmosGraph Backup<body>"+t.replace(/\n/g, '</br>')+"</body>+</html>");  // creates new tab with backup (for verification)
+    window.open().document.write("<html><title>DesmosGraph Backup</title><body>"+t.replace(/\n/g, '</br>')+"</body>+</html>");  // creates new tab with backup (for verification)
   //download( t, "DesmosBackup.json", "text/plain; charset=UTF-8" );                  // download the file
   };
 
