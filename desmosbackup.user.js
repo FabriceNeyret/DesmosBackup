@@ -48,7 +48,7 @@ function PageScript() {
     const promises = t.map(desmo);
     await Promise.all(promises);
     console.log(GraphsList);
-    header = '{ \n  "userName": "[name]",\n  "date": ' + new Date() + ',\n  "numGraphs": [N],\n  "graphs:": [ \n'; // Fabrice: following Shadertoy "export all" format
+    header = '{ \n  "userName": "[name]",\n  "date": "' + new Date() + '",\n  "numGraphs": "' + t.length + '",\n  "graphs:": [ \n'; // Fabrice: following Shadertoy "export all" format
  // download( t = header + JSON.stringify(GraphsList) + '\n  ]\n}\n', "data.txt", "text/plain; charset=UTF-8");
     download( t = header + GraphsList + '\n  ]\n}\n', "DesmosBackup.txt", "text/plain; charset=UTF-8");
 
