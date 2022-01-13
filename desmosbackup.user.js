@@ -48,12 +48,12 @@ function PageScript() {
     await Promise.all(promises);
     console.log(GraphsList);
     header = '{ \n  "userName": "[name]",\n  "date": ' + new Date() + ',\n  "numGraphs": [N],\n  "graphs:": [ \n'; // Fabrice: following Shadertoy "export all" format
-    download( header + JSON.stringify(GraphsList) + '\n  ]\n}\n', "data.txt", "text/plain; charset=UTF-8");
+    download( t = header + JSON.stringify(GraphsList) + '\n  ]\n}\n', "data.txt", "text/plain; charset=UTF-8");
 
     // ......................
     
     window.open().document.write(t);                                                    // creates new tab with backup (for verification)
-    //download( t, "DesmosBackup.html", "text/plain; charset=UTF-8" );                   // download the html file
+    //download( t, "DesmosBackup.json", "text/plain; charset=UTF-8" );                  // download the html file
   };
 
 function download(data, filename, type) { // from https://github.com/SlimRunner/desmos-scripts-addons/blob/master/graph-archival-script/
