@@ -1,4 +1,3 @@
-Work in progress ! not working for now !
 
 # DesmosBackup
 "A Backup all your graphs" export button for www.desmos.com using TamperMonkey / GreaseMonkey / etc.
