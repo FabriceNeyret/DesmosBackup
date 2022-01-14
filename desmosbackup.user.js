@@ -24,21 +24,20 @@ function PageScript() {
   // custom stuff here
   DesmosBackup.getBackup = async function() {
 
-    // ------------ MathEnthusiast314's script from https://discord.com/channels/655972529030037504/711425523573850142/926659138933624902
+    // ------------ inspired from MathEnthusiast314's script from https://discord.com/channels/655972529030037504/711425523573850142/926659138933624902
     
     t = ((Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs).map(i => i.hash))
     GraphsList = [];
-    async function desmo(hash0,i) {
-        let cur = hash0;
+    async function desmo(hash,i) {
         try {
             json = await (
-                await fetch(`https://www.desmos.com/calculator/${cur}`, {
+                await fetch(`https://www.desmos.com/calculator/${hash}`, {
                     headers: { Accept: "application/json",  },
                 })
             ).json()
         //  GraphsList.push(json);
-        //  GraphsList.push("    "+JSON.stringify(json)+"\n\n");
-            GraphList[i] = "    "+JSON.stringify(json)+"\n\n";
+            GraphsList.push("    "+JSON.stringify(json)+"\n\n"); // problem: random order
+        //  GraphList[i] = "    "+JSON.stringify(json)+"\n\n";   // why is it no longer working ?
         } catch (err) {}
     }
    //const promises = t.map(desmo); 
