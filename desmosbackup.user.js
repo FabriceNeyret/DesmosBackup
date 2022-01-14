@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DesmosBackup
 // @namespace   https://github.com/FabriceNeyret/DesmosBackup
-// @version     0.4.alpha
+// @version     0.5.alpha
 // @description Backup all your Desmos graphs as a json file
 // @author      Fabrice Neyret
 // @include     https://www.desmos.com/calculator*
@@ -23,31 +23,28 @@ function PageScript() {
 
   // custom stuff here
   DesmosBackup.getBackup = async function() {
- //   for( var i=0; i<g.length; i++) {                                                    // foreach user graphs
- //     t += "<div><a href=https://www.desmos.com/calculator/"+g[i].hash+"><img src="+g[i].thumbURL+"></br>"+g[i].title+"</a>"; // image + title + URL
- //  /* t+= " (<a href="+g[i].stateURL+">JSON"+"</a>)"; */                                // optional JSON URL for backup
 
     // ------------ MathEnthusiast314's script from https://discord.com/channels/655972529030037504/711425523573850142/926659138933624902
     
     t = ((Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs).map(i => i.hash))
     GraphsList = [];
-    async function desmo(hash0) {
+    async function desmo(hash0,i) {
         let cur = hash0;
         try {
             json = await (
                 await fetch(`https://www.desmos.com/calculator/${cur}`, {
-                    headers: {
-                        Accept: "application/json",
-                    },
+                    headers: { Accept: "application/json",  },
                 })
             ).json()
         //  GraphsList.push(json);
-            GraphsList.push("    "+JSON.stringify(json)+"\n\n")
+        //  GraphsList.push("    "+JSON.stringify(json)+"\n\n");
+            GraphList[i] = "    "+JSON.stringify(json)+"\n\n";
         } catch (err) {}
     }
-    const promises = t.map(desmo);
+   //const promises = t.map(desmo); 
+    const promises = t.map((h,i)=>desmo(h,i));
     await Promise.all(promises);
-    console.log(GraphsList);
+  //console.log(GraphsList);
     name = JSON.parse(document.getElementsByTagName('html')[0].children[1].attributes[0].textContent).user.name;
     header = '{ \n  "userName": "' + name + '",\n  "date": "' + new Date() + '",\n  "numGraphs": "' + t.length + '",\n  "graphs:": [ \n\n'; // Fabrice: following Shadertoy "export all" format
  // download( t = header + JSON.stringify(GraphsList) + '\n  ]\n}\n', "data.txt", "text/plain; charset=UTF-8");
