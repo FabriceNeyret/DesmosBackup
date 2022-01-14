@@ -13,7 +13,7 @@
 // ==/UserScript==
 
 // changelog:
-//   1.0        first version: save a json text file with all your Desmos graphs
+//   0.n.alpha        alpha version: save a json text file with all your Desmos graphs
 
 /* DesmosGraph TamperMonkey / GreaseMonkey script by MathEnthusiast314 & Fabrice Neyret */
 // script structure inspired by https://github.com/baz1/DesmosToSVG
@@ -26,7 +26,8 @@ function PageScript() {
 
     // ------------ inspired from MathEnthusiast314's script from https://discord.com/channels/655972529030037504/711425523573850142/926659138933624902
     
-    t = ((Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs).map(i => i.hash))
+//  t = ((Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs).map(i => i.hash))
+    t = Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs;
     GraphsList = [];
     async function desmo(hash,i) {
         try {
@@ -34,14 +35,14 @@ function PageScript() {
                 await fetch(`https://www.desmos.com/calculator/${hash}`, {
                     headers: { Accept: "application/json",  },
                 })
-            ).json()
+            ).json();
         //  GraphsList.push(json);
-            GraphsList.push("    "+JSON.stringify(json)+"\n\n"); // problem: random order
-        //  GraphList[i] = "    "+JSON.stringify(json)+"\n\n";   // why is it no longer working ?
+        //  GraphsList.push("    "+JSON.stringify(json)+"\n\n"); // problem: random order
+            GraphsList[i] = "    "+JSON.stringify(json)+"\n\n";   // why is it no longer working ?
         } catch (err) {}
     }
    //const promises = t.map(desmo); 
-    const promises = t.map((h,i)=>desmo(h,i));
+    const promises = t.map( (v,i) => desmo(v.hash,i) );
     await Promise.all(promises);
   //console.log(GraphsList);
     name = JSON.parse(document.getElementsByTagName('html')[0].children[1].attributes[0].textContent).user.name;
