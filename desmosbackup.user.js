@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DesmosBackup
 // @namespace   https://github.com/FabriceNeyret/DesmosBackup
-// @version     0.5.alpha
+// @version     1.0
 // @description Backup all your Desmos graphs as a json file
 // @author      Fabrice Neyret
 // @include     https://www.desmos.com/calculator*
@@ -13,7 +13,7 @@
 // ==/UserScript==
 
 // changelog:
-//   0.n.alpha        alpha version: save a json text file with all your Desmos graphs
+//   1.0        save a json text file with all your Desmos graphs, + dump on a new tab
 
 /* DesmosGraph TamperMonkey / GreaseMonkey script by MathEnthusiast314 & Fabrice Neyret */
 // script structure inspired by https://github.com/baz1/DesmosToSVG
@@ -29,7 +29,7 @@ function PageScript() {
 //  t = ((Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs).map(i => i.hash))
     t = Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs;
     GraphsList = [];
-    async function desmo(hash,i) {
+    async function getGraphJSON(hash,i) {
         try {
             json = await (
                 await fetch(`https://www.desmos.com/calculator/${hash}`, {
@@ -38,13 +38,14 @@ function PageScript() {
             ).json();
         //  GraphsList.push(json);
         //  GraphsList.push("    "+JSON.stringify(json)+"\n\n"); // problem: random order
-            GraphsList[i] = "    "+JSON.stringify(json)+"\n\n";   // why is it no longer working ?
+            GraphsList[i] = "    "+JSON.stringify(json)+"\n\n";   
         } catch (err) {}
     }
-   //const promises = t.map(desmo); 
-    const promises = t.map( (v,i) => desmo(v.hash,i) );
-    await Promise.all(promises);
-  //console.log(GraphsList);
+   //const promises = t.map(getGraphJSON); 
+    const promises = t.map( (v,i) => getGraphJSON(v.hash,i) );              // asynchroneous filling of the array
+    await Promise.all(promises);                                            // wait for completion
+    
+  //console.log(GraphsList);                                                // save the JSON file
     name = JSON.parse(document.getElementsByTagName('html')[0].children[1].attributes[0].textContent).user.name;
     header = '{ \n  "userName": "' + name + '",\n  "date": "' + new Date() + '",\n  "numGraphs": "' + t.length + '",\n  "graphs:": [ \n\n'; // Fabrice: following Shadertoy "export all" format
  // download( t = header + JSON.stringify(GraphsList) + '\n  ]\n}\n', "data.txt", "text/plain; charset=UTF-8");
@@ -53,9 +54,9 @@ function PageScript() {
 
     // ......................
     
-  //window.open().document.write(t);                                                    // creates new tab with backup (for verification)
+  //window.open().document.write(t);                                        // creates new tab with backup (for verification)
     window.open().document.write("<html><head><title>DesmosGraph Backup</title></head><body>"+t.replace(/\n/g, '</br>')+"</body>+</html>");  // creates new tab with backup (for verification)
-  //download( t, "DesmosBackup.json", "text/plain; charset=UTF-8" );                  // download the file
+  //download( t, "DesmosBackup.json", "text/plain; charset=UTF-8" );        // download the file
   };
 
 function download(data, filename, type) { // from https://github.com/SlimRunner/desmos-scripts-addons/blob/master/graph-archival-script/
