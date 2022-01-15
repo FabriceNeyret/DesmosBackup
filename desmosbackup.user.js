@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DesmosBackup
 // @namespace   https://github.com/FabriceNeyret/DesmosBackup
-// @version     1.0
+// @version     1.1
 // @description Backup all your Desmos graphs as a json file
 // @author      Fabrice Neyret
 // @include     https://www.desmos.com/calculator*
@@ -13,6 +13,7 @@
 // ==/UserScript==
 
 // changelog:
+//   1.1        add script version in json to help fureu loader
 //   1.0        save a json text file with all your Desmos graphs, + dump on a new tab
 
 /* DesmosGraph TamperMonkey / GreaseMonkey script by MathEnthusiast314 & Fabrice Neyret */
@@ -47,7 +48,7 @@ function PageScript() {
     
   //console.log(GraphsList);                                                // save the JSON file
     name = JSON.parse(document.getElementsByTagName('html')[0].children[1].attributes[0].textContent).user.name;
-    header = '{ \n  "userName": "' + name + '",\n  "date": "' + new Date() + '",\n  "numGraphs": "' + t.length + '",\n  "graphs:": [ \n\n'; // Fabrice: following Shadertoy "export all" format
+    header = '{ \n  "version": "1.1"\n userName": "' + name + '",\n  "date": "' + new Date() + '",\n  "numGraphs": "' + t.length + '",\n  "graphs:": [ \n\n'; // Fabrice: following Shadertoy "export all" format
  // download( t = header + JSON.stringify(GraphsList) + '\n  ]\n}\n', "data.txt", "text/plain; charset=UTF-8");
     download( t = header + GraphsList + '\n  ]\n}\n', "DesmosBackup.txt", "text/plain; charset=UTF-8");
 
