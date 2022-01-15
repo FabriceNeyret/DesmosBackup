@@ -48,7 +48,7 @@ function PageScript() {
     
   //console.log(GraphsList);                                                // save the JSON file
     name = JSON.parse(document.getElementsByTagName('html')[0].children[1].attributes[0].textContent).user.name;
-    header = '{ \n  "version": "1.1"\n userName": "' + name + '",\n  "date": "' + new Date() + '",\n  "numGraphs": "' + t.length + '",\n  "graphs:": [ \n\n'; // Fabrice: following Shadertoy "export all" format
+    header = '{ \n  "version": "1.1",\n userName": "' + name + '",\n  "date": "' + new Date() + '",\n  "numGraphs": "' + t.length + '",\n  "graphs:": [ \n\n'; // Fabrice: following Shadertoy "export all" format
  // download( t = header + JSON.stringify(GraphsList) + '\n  ]\n}\n', "data.txt", "text/plain; charset=UTF-8");
     download( t = header + GraphsList + '\n  ]\n}\n', "DesmosBackup.txt", "text/plain; charset=UTF-8");
 
