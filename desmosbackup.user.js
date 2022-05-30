@@ -8,8 +8,8 @@
 // @match       https://*.desmos.com/calculator*
 // @run-at      document-start
 // @grant       GM_addStyle
-// @downloadURL https://github.com/FabriceNeyret/DesmosBackup/edit/main/demosbackup.user.js
-// @updateURL   https://github.com/FabriceNeyret/DesmosBackup/edit/main/demosbackup.user.js
+// @downloadURL https://github.com/FabriceNeyret/DesmosBackup/blob/main/demosbackup.user.js
+// @updateURL   https://github.com/FabriceNeyret/DesmosBackup/blob/main/demosbackup.user.js
 // ==/UserScript==
 
 // changelog:
