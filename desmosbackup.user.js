@@ -13,6 +13,7 @@
 // ==/UserScript==
 
 // changelog:
+//   1.3        fix after Desmos Calc is now closured. Now rely on DesModder util.
 //   1.2        change file type to json
 //   1.1        add script version in json to help fureu loader
 //   1.0        save a json text file with all your Desmos graphs, + dump on a new tab
@@ -28,8 +29,8 @@ function PageScript() {
 
     // ------------ inspired from MathEnthusiast314's script from https://discord.com/channels/655972529030037504/711425523573850142/926659138933624902
     
-//  t = ((Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs).map(i => i.hash))
-    t = Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs;
+    var t = DesModder.controller.topLevelComponents.graphsController.__savedGraphs;     // since 09/2022 the Calc structure is no longer exposed. Now rely on DesModder util.
+//  var t = Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs;
     GraphsList = [];
     async function getGraphJSON(hash,i) {
         try {
