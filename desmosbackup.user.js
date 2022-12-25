@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DesmosBackup
 // @namespace   https://github.com/FabriceNeyret/DesmosBackup
-// @version     1.3
+// @version     1.4
 // @description Backup all your Desmos graphs as a json file
 // @author      Fabrice Neyret
 // @include     https://www.desmos.com/calculator*
@@ -14,6 +14,7 @@
 //              https://github.com/FabriceNeyret/DesmosBackup/blob/main/demosbackup.user.js
 
 // changelog:
+//   1.4        structure new place found. Independance back.
 //   1.3        fix after Desmos Calc is now closured. Now rely on DesModder util.
 //   1.2        change file type to json
 //   1.1        add script version in json to help fureu loader
@@ -30,8 +31,9 @@ function PageScript() {
 
     // ------------ inspired from MathEnthusiast314's script from https://discord.com/channels/655972529030037504/711425523573850142/926659138933624902
     
-    var t = DesModder.controller.topLevelComponents.graphsController.__savedGraphs;     // since 09/2022 the Calc structure is no longer exposed. Now rely on DesModder util.
-//  var t = Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs;
+    var t = Calc._calc.globalHotkeys.mygraphsController.graphsController.__savedGraphs; // structure found again. ( thanks Naitronbomb ! )
+//  var t = DesModder.controller.topLevelComponents.graphsController.__savedGraphs;     // since 09/2022 the Calc structure is no longer exposed. Now rely on DesModder util.
+//  var t = Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs; // structure containing all user graph informations. ( thanks fireflame241 ! )
     GraphsList = [];
     async function getGraphJSON(hash,i) {
         try {
