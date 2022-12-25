@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DesmosBackup
 // @namespace   https://github.com/FabriceNeyret/DesmosBackup
-// @version     1.4
+// @version     1.5
 // @description Backup all your Desmos graphs as a json file
 // @author      Fabrice Neyret
 // @include     https://www.desmos.com/calculator*
@@ -14,6 +14,7 @@
 //              https://github.com/FabriceNeyret/DesmosBackup/blob/main/demosbackup.user.js
 
 // changelog:
+//   1.5        protection against DesModder freezing Desmos start script
 //   1.4        structure new place found. Independance back.
 //   1.3        fix after Desmos Calc is now closured. Now rely on DesModder util.
 //   1.2        change file type to json
@@ -83,7 +84,19 @@ function download(data, filename, type) { // from https://github.com/SlimRunner/
     }
 }
 
-  var main = function() {
+  function pollForValue(func) {
+    return new Promise((resolve) => {
+      const interval = setInterval(() => {
+        const val = func();
+        if (val !== null && val !== undefined) {
+          clearInterval(interval);
+          resolve(val);
+        }
+      }, 100);
+    });
+  }
+  
+  function init() {  
 
     var spanObj = document.createElement("SPAN");                                       // creates button
     DesmosBackup.button = document.createElement("INPUT");
@@ -109,7 +122,14 @@ function download(data, filename, type) { // from https://github.com/SlimRunner/
     console.log("GM_DesmosBackup: (Info) Button added.");
 
   }
-
+  
+  var main = function() {
+    pollForValue(() => window.Calc).then(() => {  // protection against DesModder freezing Desmos start script
+        console.log("Calc has been loaded");
+        init();
+      });
+  }
+  
   setTimeout(main, 3000);
 }
 
