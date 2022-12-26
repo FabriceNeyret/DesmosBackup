@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DesmosBackup
 // @namespace   https://github.com/FabriceNeyret/DesmosBackup
-// @version     1.5
+// @version     1.5.1
 // @description Backup all your Desmos graphs as a json file
 // @author      Fabrice Neyret
 // @include     https://www.desmos.com/calculator*
@@ -122,15 +122,11 @@ function download(data, filename, type) { // from https://github.com/SlimRunner/
     console.log("GM_DesmosBackup: (Info) Button added.");
 
   }
-  
-  var main = function() {
-    pollForValue(() => window.Calc).then(() => {  // protection against DesModder freezing Desmos start script
+
+  pollForValue(() => window.Calc).then(() => {  // protection against DesModder freezing Desmos start script
         console.log("Calc has been loaded");
         init();
       });
-  }
-  
-  setTimeout(main, 3000);
 }
 
 function AddJSNode(fn, url) {
