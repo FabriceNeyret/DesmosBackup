@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DesmosBackup
 // @namespace   https://github.com/FabriceNeyret/DesmosBackup
-// @version     1.5.2
+// @version     1.5.3
 // @description Backup all your Desmos graphs as a json file
 // @author      Fabrice Neyret
 // @include     https://www.desmos.com/calculator*
@@ -14,6 +14,7 @@
 //              https://github.com/FabriceNeyret/DesmosBackup/blob/main/demosbackup.user.js
 
 // changelog:
+//   1.5.3      fix after new change in Desmos Calc structure.
 //   1.5        protection against DesModder freezing Desmos start script
 //   1.4        structure new place found. Independance back.
 //   1.3        fix after Desmos Calc is now closured. Now rely on DesModder util.
@@ -32,10 +33,11 @@ function PageScript() {
 
     // ------------ inspired from MathEnthusiast314's script from https://discord.com/channels/655972529030037504/711425523573850142/926659138933624902
     
-    var t = Calc._calc.globalHotkeys.mygraphsController.graphsController.__savedGraphs.data; // yet another change.  ( thanks sam-lb )
-//  var t = Calc._calc.globalHotkeys.mygraphsController.graphsController.__savedGraphs; // structure found again. ( thanks Naitronbomb ! )
-//  var t = DesModder.controller.topLevelComponents.graphsController.__savedGraphs;     // since 09/2022 the Calc structure is no longer exposed. Now rely on DesModder util.
-//  var t = Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs; // structure containing all user graph informations. ( thanks fireflame241 ! )
+    var t = Calc._calc.globalHotkeys.shellController.mygraphsController.graphsController.__savedGraphs.data; // yet another change.  ( thanks sea-saw )
+ // var t = Calc._calc.globalHotkeys.mygraphsController.graphsController.__savedGraphs.data; // yet another change.  ( thanks sam-lb )
+ // var t = Calc._calc.globalHotkeys.mygraphsController.graphsController.__savedGraphs; // structure found again. ( thanks Naitronbomb ! )
+ // var t = DesModder.controller.topLevelComponents.graphsController.__savedGraphs;     // since 09/2022 the Calc structure is no longer exposed. Now rely on DesModder util.
+ // var t = Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs; // structure containing all user graph informations. ( thanks fireflame241 ! )
     GraphsList = [];
     async function getGraphJSON(hash,i) {
         try {
