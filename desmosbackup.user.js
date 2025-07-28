@@ -111,11 +111,11 @@ function download(data, filename, type) { // from https://github.com/SlimRunner/
     spanObj.appendChild(DesmosBackup.button);
 
     DesmosBackup.graph = document.getElementsByClassName("dcg-graph-inner");           // attach it to the top bar
-// if (DesmosGallery.graph.length != 1) {
-//    console.log("GM_DesmosGallery: Graph not found, or several found.");
+// if (DesmosBackup.graph.length != 1) {
+//    console.log("GM_DesmosBackup: Graph not found, or several found.");
 //    return;
 //  }
-    if (DesmosGallery.graph.length < 1) {                                              // strangely, 3d graphs have two.
+    if (DesmosBackup.graph.length < 1) {                                              // strangely, 3d graphs have two.
       console.log("GM_DesmosGallery: Graph not found.");
       return;
     }
