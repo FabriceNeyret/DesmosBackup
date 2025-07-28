@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name        DesmosBackup
 // @namespace   https://github.com/FabriceNeyret/DesmosBackup
-// @version     1.5.3
+// @version     1.5.4
 // @description Backup all your Desmos graphs as a json file
 // @author      Fabrice Neyret
-// @include     https://www.desmos.com/calculator*
 // @match       https://*.desmos.com/calculator*
+// @match       https://*.desmos.com/3d*
 // @run-at      document-start
 // @grant       GM_addStyle
 // @downloadURL https://github.com/FabriceNeyret/DesmosBackup/raw/main/desmosbackup.user.js
@@ -57,7 +57,7 @@ function PageScript() {
     
   //console.log(GraphsList);                                                // save the JSON file
     name = JSON.parse(document.getElementsByTagName('html')[0].children[1].attributes[0].textContent).user.name;
-    header = '{ \n  "version": "1.5.3",\n  "userName": "' + name + '",\n  "date": "' + new Date() + '",\n  "numGraphs": "' + t.length + '",\n  "graphs:": [ \n\n'; // Fabrice: following Shadertoy "export all" format
+    header = '{ \n  "version": "1.5.4",\n  "userName": "' + name + '",\n  "date": "' + new Date() + '",\n  "numGraphs": "' + t.length + '",\n  "graphs:": [ \n\n'; // Fabrice: following Shadertoy "export all" format
  // download( t = header + JSON.stringify(GraphsList) + '\n  ]\n}\n', "data.txt", "text/plain; charset=UTF-8");
     download( t = header + GraphsList + '\n  ]\n}\n', "DesmosBackup.json", "text/plain; charset=UTF-8");
 
@@ -111,8 +111,12 @@ function download(data, filename, type) { // from https://github.com/SlimRunner/
     spanObj.appendChild(DesmosBackup.button);
 
     DesmosBackup.graph = document.getElementsByClassName("dcg-graph-inner");           // attach it to the top bar
-    if (DesmosBackup.graph.length != 1) {
-      console.log("GM_DesmosBackup: Graph not found, or several found.");
+// if (DesmosGallery.graph.length != 1) {
+//    console.log("GM_DesmosGallery: Graph not found, or several found.");
+//    return;
+//  }
+    if (DesmosGallery.graph.length < 1) {                                              // strangely, 3d graphs have two.
+      console.log("GM_DesmosGallery: Graph not found.");
       return;
     }
     DesmosBackup.graph = DesmosBackup.graph[0];
