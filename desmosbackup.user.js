@@ -116,7 +116,7 @@ function download(data, filename, type) { // from https://github.com/SlimRunner/
 //    return;
 //  }
     if (DesmosBackup.graph.length < 1) {                                              // strangely, 3d graphs have two.
-      console.log("GM_DesmosGallery: Graph not found.");
+      console.log("GM_DesmosBackup: Graph not found.");
       return;
     }
     DesmosBackup.graph = DesmosBackup.graph[0];
