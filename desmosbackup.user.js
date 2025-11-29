@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        DesmosBackup
 // @namespace   https://github.com/FabriceNeyret/DesmosBackup
-// @version     1.5.4
+// @version     1.6
 // @description Backup all your Desmos graphs as a json file
 // @author      Fabrice Neyret
 // @match       https://*.desmos.com/calculator*
@@ -14,6 +14,7 @@
 //              https://github.com/FabriceNeyret/DesmosBackup/blob/main/demosbackup.user.js
 
 // changelog:
+//   1.6        new Desmos API change, + now saves 2D and 3D graphs
 //   1.5.3      fix after new change in Desmos Calc structure.
 //   1.5        protection against DesModder freezing Desmos start script
 //   1.4        structure new place found. Independance back.
@@ -33,16 +34,18 @@ function PageScript() {
 
     // ------------ inspired from MathEnthusiast314's script from https://discord.com/channels/655972529030037504/711425523573850142/926659138933624902
     
-    var t = Calc._calc.globalHotkeys.shellController.mygraphsController.graphsController.__savedGraphs.data; // yet another change.  ( thanks sea-saw )
- // var t = Calc._calc.globalHotkeys.mygraphsController.graphsController.__savedGraphs.data; // yet another change.  ( thanks sam-lb )
- // var t = Calc._calc.globalHotkeys.mygraphsController.graphsController.__savedGraphs; // structure found again. ( thanks Naitronbomb ! )
- // var t = DesModder.controller.topLevelComponents.graphsController.__savedGraphs;     // since 09/2022 the Calc structure is no longer exposed. Now rely on DesModder util.
- // var t = Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs; // structure containing all user graph informations. ( thanks fireflame241 ! )
+ var t = window.shellController.graphsController.fetchMyGraphsForAllProducts().then( t=>{ t = t.graphs2d.concat(t.graphs3d); // again. ( thanks SlimRunner & UnofficialDesmos discord ! )
+// var t = Calc._calc.globalHotkeys.shellController.mygraphsController.graphsController.__savedGraphs.data; // yet another change.  ( thanks sea-saw )
+// var t = Calc._calc.globalHotkeys.mygraphsController.graphsController.__savedGraphs.data; // yet another change.  ( thanks sam-lb )
+// var t = Calc._calc.globalHotkeys.mygraphsController.graphsController.__savedGraphs; // structure found again. ( thanks Naitronbomb ! )
+// var t = DesModder.controller.topLevelComponents.graphsController.__savedGraphs;     // since 09/2022 the Calc structure is no longer exposed. Now rely on DesModder util.
+// var t = Calc.myGraphsWrapper._childViews[0].props.graphsController().__savedGraphs; // structure containing all user graph informations. ( thanks fireflame241 ! )
     GraphsList = [];
     async function getGraphJSON(hash,i) {
         try {
             json = await (
-                await fetch(`https://www.desmos.com/calculator/${hash}`, {
+                await fetch(`https://www.desmos.com/${hash}`, {  // now contains productdir/hash
+            //  await fetch(`https://www.desmos.com/calculator/${hash}`, {
                     headers: { Accept: "application/json",  },
                 })
             ).json();
@@ -52,22 +55,22 @@ function PageScript() {
         } catch (err) {}
     }
    //const promises = t.map(getGraphJSON); 
-    const promises = t.map( (v,i) => getGraphJSON(v.hash,i) );              // asynchroneous filling of the array
-    await Promise.all(promises);                                            // wait for completion
+// const promises = t.map( (v,i) => getGraphJSON(v.hash,i) );              // asynchroneous filling of the array
+// await Promise.all(promises);                                            // wait for completion
+    const promises = t.map( (v,i) => getGraphJSON( (v.product.localeCompare("graphing")==0?"calculator/":"3d/") + v.hash , i ) );              // asynchroneous filling of the array
+    Promise.all(promises).then( k => {
     
   //console.log(GraphsList);                                                // save the JSON file
-    name = JSON.parse(document.getElementsByTagName('html')[0].children[1].attributes[0].textContent).user.name;
-    header = '{ \n  "version": "1.5.4",\n  "userName": "' + name + '",\n  "date": "' + new Date() + '",\n  "numGraphs": "' + t.length + '",\n  "graphs:": [ \n\n'; // Fabrice: following Shadertoy "export all" format
+    name = JSON.parse(document.getElementsByTagName('html')[0].children[2].attributes[0].textContent).user.name;
+    header = '{ \n  "version": "1.6",\n  "userName": "' + name + '",\n  "date": "' + new Date() + '",\n  "numGraphs": "' + t.length + '",\n  "graphs:": [ \n\n'; // Fabrice: following Shadertoy "export all" format
  // download( t = header + JSON.stringify(GraphsList) + '\n  ]\n}\n', "data.txt", "text/plain; charset=UTF-8");
     download( t = header + GraphsList + '\n  ]\n}\n', "DesmosBackup.json", "text/plain; charset=UTF-8");
 
-
-    // ......................
-    
+    // ......................    
   //window.open().document.write(t);                                        // creates new tab with backup (for verification)
     window.open().document.write("<html><head><title>DesmosGraph Backup</title></head><body>"+t.replace(/\n/g, '</br>')+"</body>+</html>");  // creates new tab with backup (for verification)
   //download( t, "DesmosBackup.json", "text/plain; charset=UTF-8" );        // download the file
-  };
+    })})};
 
 function download(data, filename, type) { // from https://github.com/SlimRunner/desmos-scripts-addons/blob/master/graph-archival-script/
     var file = new Blob([data], {type: type});
