@@ -7,6 +7,9 @@ Save it as a Json file, and opens it in a new browser tab for verification.
 # Usage
 Navigate to the main calculator page of Desmos.com, wait for the button "Backup all graphs" to appear in the top-right corner of the page. If it is disabled, you should just need to update the view e.g. by dragging it a bit with the mouse. Click on the button to save all your graphs as a json file. It is also displayed in a new tab for verification or copy-paste.
 
+Attention: only saves 2D and 3D graphs
+Bug: for some reason, button won't show if opening Desmos first in 3D.
+
 # Installation
 Once you have installed TamperMonkey/GreaseMonkey/variant plugin in your favorite browser, then it's as for any script: click on the name.user.js file above, then "raw". Tampermonkey should then directly propose to install the script, otherwise click on your Monkey plugin icon shortcut and manually copy-paste the code as a new script.
 
